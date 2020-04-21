@@ -1,0 +1,351 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+ <title>{% block title %}{% endblock %}</title>
+ <link href="{% static 'css/blog.css' %}" rel="stylesheet">
+</head>
+<body class="a" style="background:#000000">
+ <div id="content" style="color:#99e6ff">
+   {% block content %}
+   {% endblock %}
+ </div>
+
+ <div class="sidebar" id="sidebar" height="2000"
+  width="200" style="background:#4dd2ff" >
+
+  <button style="background-color:#4dd2ff;float: right;">
+     	<a style="color:white" href="http://127.0.0.1:8000/">
+     		<img src="{% static "images/home.png" %}" / height="42" width="42">
+     	</a>
+  </button>
+
+   <center><h2  class="a" style="color:black">About Me:</h2></center>
+   	 <br></br>
+     <font size="4"><pre  class="a" style="color:black">
+     Hey, my name is Gal and i decided to
+     write a blog about new things i try
+      every day. Hope you enjoy it and 
+      maybe even try it yourself:)</pre></font>
+     <!--<p><a style="color:black" href="{% url "blog:post_feed" %}" title="Subscribe to my RSS feed">RSS feed</a></p>-->
+     
+<head>
+</head>
+<body>
+<br></br>
+<center>
+<script language="javascript" type="text/javascript" >
+	var day_of_week = new Array('Sun','Mon','Tue','Wed','Thu','Fri','Sat');
+	var month_of_year = new Array('January','February','March','April','May','June','July','August','September','October','November','December');
+
+	//  DECLARE AND INITIALIZE VARIABLES
+	var Calendar = new Date();
+
+	var year = Calendar.getFullYear();     // Returns year
+	var month = Calendar.getMonth();    // Returns month (0-11)
+	var today = Calendar.getDate();    // Returns day (1-31)
+	var weekday = Calendar.getDay();    // Returns day (1-31)
+
+	var DAYS_OF_WEEK = 7;    // "constant" for number of days in a week
+	var DAYS_OF_MONTH = 31;    // "constant" for number of days in a month
+	var cal;    // Used for printing
+
+	Calendar.setDate(1);    // Start the calendar day at '1'
+	Calendar.setMonth(month);    // Start the calendar month at now
+
+
+	// VARIABLES FOR FORMATTING
+
+	var TR_start = '<TR>';
+	var TR_end = '</TR>';
+	var highlight_start = '<TD WIDTH="30"><TABLE CELLSPACING=0 BORDER=1 BGCOLOR=DEDEFF BORDERCOLOR=CCCCCC><TR><TD WIDTH=20><B><CENTER>';
+	var highlight_end   = '</CENTER></TD></TR></TABLE></B>';
+	var TD_start = '<TD WIDTH="30"><CENTER>';
+	var TD_end = '</CENTER></TD>';
+
+	// BEGIN CODE FOR CALENDAR
+
+	cal =  '<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 BORDERCOLOR=BBBBBB><TR><TD>';
+	cal += '<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=4>' + TR_start;
+	cal += '<TD COLSPAN="' + DAYS_OF_WEEK + '" BGCOLOR="#EFEFEF"><CENTER><B>';
+	cal += month_of_year[month]  + '   ' + year + '</B>' + TD_end + TR_end;
+	cal += TR_start;
+
+	//   DO NOT EDIT BELOW THIS POINT  //
+
+	// LOOPS FOR EACH DAY OF WEEK
+	for(index=0; index < DAYS_OF_WEEK; index++)
+	{
+
+		// BOLD TODAY'S DAY OF WEEK
+		if(weekday == index)
+		cal += TD_start + '<B>' + day_of_week[index] + '</B>' + TD_end;
+
+		// PRINTS DAY
+		else
+		cal += TD_start + day_of_week[index] + TD_end;
+	}
+
+	cal += TD_end + TR_end;
+	cal += TR_start;
+
+	// FILL IN BLANK GAPS UNTIL TODAY'S DAY
+	for(index=0; index < Calendar.getDay(); index++)
+		cal += TD_start + '  ' + TD_end;
+
+	// LOOPS FOR EACH DAY IN CALENDAR
+	for(index=0; index < DAYS_OF_MONTH; index++)
+	{
+		if( Calendar.getDate() > index )
+		{
+			  // RETURNS THE NEXT DAY TO PRINT
+			  week_day =Calendar.getDay();
+
+			  // START NEW ROW FOR FIRST DAY OF WEEK
+			  if(week_day == 0)
+			  	cal += TR_start;
+
+			  if(week_day != DAYS_OF_WEEK)
+			  {
+
+			  // SET VARIABLE INSIDE LOOP FOR INCREMENTING PURPOSES
+				  var day  = Calendar.getDate();
+
+				  // HIGHLIGHT TODAY'S DATE
+				  if( today==Calendar.getDate() )
+				  	cal += highlight_start + day + highlight_end + TD_end;
+
+				  // PRINTS DAY
+				  else
+				  	cal += TD_start + day + TD_end;
+			  }
+
+			  // END ROW FOR LAST DAY OF WEEK
+			  if(week_day == DAYS_OF_WEEK)
+			  	cal += TR_end;
+		  }
+
+		  // INCREMENTS UNTIL END OF THE MONTH
+		  Calendar.setDate(Calendar.getDate()+1);
+
+	}// end for loop
+
+	cal += '</TD></TR></TABLE></TABLE>';
+
+	//  PRINT CALENDAR
+	document.write(cal);
+
+	//  End -->
+</script>
+
+<p><a href="{% url "blog:post_feed" %}" title="Subscribe to my RSS feed">RSS feed</a></p>
+</center>
+</body>
+</html>
+</div>
+ 
+ </body>
+
+ <style>
+
+  h2.a,p.a {
+   	font-family: "Comic Sans MS", cursive, sans-serif;
+  }
+
+  #snowflakeContainer {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    display: none;
+  }
+
+  .snowflake {
+    position: fixed;
+    background-color: #FFFFFF;
+    user-select: none;
+    z-index: 1000;
+    pointer-events: none;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+  }
+</style>
+
+<div id="snowflakeContainer">
+  <span class="snowflake"></span>
+</div>
+ 
+<script>
+  // Array to store our Snowflake objects
+  var snowflakes = [];
+
+  // Global variables to store our browser's window size
+  var browserWidth;
+  var browserHeight;
+
+  // Specify the number of snowflakes you want visible
+  var numberOfSnowflakes = 50;
+
+  // Flag to reset the position of the snowflakes
+  var resetPosition = false;
+
+  // Handle accessibility
+  var enableAnimations = false;
+  var reduceMotionQuery = matchMedia("(prefers-reduced-motion)");
+
+  // Handle animation accessibility preferences 
+  function setAccessibilityState() {
+    if (reduceMotionQuery.matches) {
+      enableAnimations = false;
+    } else { 
+      enableAnimations = true;
+    }
+  }
+  setAccessibilityState();
+
+  reduceMotionQuery.addListener(setAccessibilityState);
+
+  //
+  // It all starts here...
+  //
+  function setup() {
+    if (enableAnimations) {
+      window.addEventListener("DOMContentLoaded", generateSnowflakes, false);
+      window.addEventListener("resize", setResetFlag, false);
+    }
+  }
+  setup();
+
+  //
+  // Constructor for our Snowflake object
+  //
+  function Snowflake(element, speed, xPos, yPos) {
+    // set initial snowflake properties
+    this.element = element;
+    this.speed = speed;
+    this.xPos = xPos;
+    this.yPos = yPos;
+    this.scale = 1;
+
+    // declare variables used for snowflake's motion
+    this.counter = 0;
+    this.sign = Math.random() < 0.5 ? 1 : -1;
+
+    // setting an initial opacity and size for our snowflake
+    this.element.style.opacity = (.1 + Math.random()) / 3;
+  }
+
+  //
+  // The function responsible for actually moving our snowflake
+  //
+  Snowflake.prototype.update = function () {
+    // using some trigonometry to determine our x and y position
+    this.counter += this.speed / 5000;
+    this.xPos += this.sign * this.speed * Math.cos(this.counter) / 40;
+    this.yPos += Math.sin(this.counter) / 40 + this.speed / 30;
+    this.scale = .5 + Math.abs(10 * Math.cos(this.counter) / 20);
+
+    // setting our snowflake's position
+    setTransform(Math.round(this.xPos), Math.round(this.yPos), this.scale, this.element);
+
+    // if snowflake goes below the browser window, move it back to the top
+    if (this.yPos > browserHeight) {
+      this.yPos = -50;
+    }
+  }
+
+  //
+  // A performant way to set your snowflake's position and size
+  //
+  function setTransform(xPos, yPos, scale, el) {
+    el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0) scale(${scale}, ${scale})`;
+  }
+
+  //
+  // The function responsible for creating the snowflake
+  //
+  function generateSnowflakes() {
+
+    // get our snowflake element from the DOM and store it
+    var originalSnowflake = document.querySelector(".snowflake");
+
+    // access our snowflake element's parent container
+    var snowflakeContainer = originalSnowflake.parentNode;
+    snowflakeContainer.style.display = "block";
+
+    // get our browser's size
+    browserWidth = document.documentElement.clientWidth;
+    browserHeight = document.documentElement.clientHeight;
+
+    // create each individual snowflake
+    for (var i = 0; i < numberOfSnowflakes; i++) {
+
+      // clone our original snowflake and add it to snowflakeContainer
+      var snowflakeClone = originalSnowflake.cloneNode(true);
+      snowflakeContainer.appendChild(snowflakeClone);
+
+      // set our snowflake's initial position and related properties
+      var initialXPos = getPosition(50, browserWidth);
+      var initialYPos = getPosition(50, browserHeight);
+      var speed = 5 + Math.random() * 40;
+
+      // create our Snowflake object
+      var snowflakeObject = new Snowflake(snowflakeClone,
+        speed,
+        initialXPos,
+        initialYPos);
+      snowflakes.push(snowflakeObject);
+    }
+
+    // remove the original snowflake because we no longer need it visible
+    snowflakeContainer.removeChild(originalSnowflake);
+
+    moveSnowflakes();
+  }
+
+  //
+  // Responsible for moving each snowflake by calling its update function
+  //
+  function moveSnowflakes() {
+
+    if (enableAnimations) {
+      for (var i = 0; i < snowflakes.length; i++) {
+        var snowflake = snowflakes[i];
+        snowflake.update();
+      }      
+    }
+
+    // Reset the position of all the snowflakes to a new value
+    if (resetPosition) {
+      browserWidth = document.documentElement.clientWidth;
+      browserHeight = document.documentElement.clientHeight;
+
+      for (var i = 0; i < snowflakes.length; i++) {
+        var snowflake = snowflakes[i];
+
+        snowflake.xPos = getPosition(50, browserWidth);
+        snowflake.yPos = getPosition(50, browserHeight);
+      }
+
+      resetPosition = false;
+    }
+
+    requestAnimationFrame(moveSnowflakes);
+  }
+
+  //
+  // This function returns a number between (maximum - offset) and (maximum + offset)
+  //
+  function getPosition(offset, size) {
+    return Math.round(-1 * offset + Math.random() * (size + 2 * offset));
+  }
+
+  //
+  // Trigger a reset of all the snowflakes' positions
+  //
+  function setResetFlag(e) {
+    resetPosition = true;
+  }
+</script>
+</body>
+</html>

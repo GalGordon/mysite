@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+ <h1 style="color:#ff1a1a">{{ post.title }}</h1>
+ <p class="date" style="color:#FFFFFF">
+   Published {{ post.publish }} by {{ post.author }}
+ </p>
+ {{ post.body|linebreaks }}
+
+{% endblock %}
+
+
